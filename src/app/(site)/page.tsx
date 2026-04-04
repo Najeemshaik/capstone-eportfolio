@@ -1,10 +1,10 @@
 import type { Metadata } from "next"
+import Image from "next/image"
 import Link from "next/link"
 import { ArrowRight } from "lucide-react"
 import { getFeaturedProjects } from "@/data/projects"
 import { Reveal } from "@/components/animations/reveal"
-import { StaggerContainer, StaggerItem } from "@/components/animations/stagger-container"
-import { Badge } from "@/components/ui/badge"
+import { ProjectList } from "@/components/project-list"
 
 export const metadata: Metadata = {
   title: "Najeem Shaik — Engineering & Design",
@@ -26,40 +26,53 @@ export default function HomePage() {
   return (
     <div className="max-w-6xl mx-auto px-6">
       {/* Hero */}
-      <section className="min-h-[88vh] flex flex-col justify-center py-24">
-        <Reveal>
-          <p className="text-caption text-[var(--color-accent)] mb-6">
-            Najeem Shaik
-          </p>
-        </Reveal>
-        <Reveal delay={0.05}>
-          <h1 className="text-display-xl text-[var(--color-foreground)] max-w-4xl mb-8">
-            Engineering systems that people actually want to use.
-          </h1>
-        </Reveal>
-        <Reveal delay={0.1}>
-          <p className="text-body-lg text-[var(--color-muted-foreground)] max-w-xl mb-12">
-            Electrical engineering student at UBC. Software engineer. Aspiring technical founder.
-            I build at the intersection of engineering precision and product obsession.
-          </p>
-        </Reveal>
-        <Reveal delay={0.15}>
-          <div className="flex flex-wrap gap-4">
-            <Link
-              href="/projects"
-              className="inline-flex items-center gap-2 text-caption text-[var(--color-foreground)] border border-[var(--color-border)] px-5 py-3 hover:border-[var(--color-accent)] hover:text-[var(--color-accent)] transition-colors duration-200"
-            >
-              View work
-              <ArrowRight size={14} strokeWidth={1.5} />
-            </Link>
-            <Link
-              href="/about"
-              className="inline-flex items-center gap-2 text-caption text-[var(--color-muted-foreground)] px-5 py-3 hover:text-[var(--color-foreground)] transition-colors duration-200"
-            >
-              About me
-            </Link>
+      <section className="min-h-[80vh] flex items-center py-16">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center w-full">
+          <div>
+            <Reveal>
+              <p className="text-caption text-[var(--color-accent)] mb-6">
+                Najeem Shaik
+              </p>
+            </Reveal>
+            <Reveal delay={0.05}>
+              <h1 className="text-display-xl text-[var(--color-foreground)] mb-6">
+                Engineer, designer, builder.
+              </h1>
+            </Reveal>
+            <Reveal delay={0.1}>
+              <p className="text-body-lg text-[var(--color-muted-foreground)] max-w-md mb-10">
+                UBC electrical engineering meets a decade of design. I ship software that&apos;s both rigorous and human.
+              </p>
+            </Reveal>
+            <Reveal delay={0.15}>
+              <div className="flex flex-wrap gap-4">
+                <Link
+                  href="/projects"
+                  className="inline-flex items-center gap-2 text-caption text-[var(--color-foreground)] border border-[var(--color-border)] px-5 py-3 hover:border-[var(--color-accent)] hover:text-[var(--color-accent)] transition-colors duration-200"
+                >
+                  View work
+                  <ArrowRight size={14} strokeWidth={1.5} />
+                </Link>
+                <Link
+                  href="/about"
+                  className="inline-flex items-center gap-2 text-caption text-[var(--color-muted-foreground)] px-5 py-3 hover:text-[var(--color-foreground)] transition-colors duration-200"
+                >
+                  About me
+                </Link>
+              </div>
+            </Reveal>
           </div>
-        </Reveal>
+          <Reveal delay={0.2} className="relative flex justify-end items-end h-[680px] overflow-hidden">
+            <Image
+              src="/assets/image.png"
+              alt="Najeem Shaik"
+              width={600}
+              height={750}
+              priority
+              className="-scale-x-100 object-cover object-bottom"
+            />
+          </Reveal>
+        </div>
       </section>
 
       {/* Credibility signals */}
@@ -89,116 +102,7 @@ export default function HomePage() {
           </div>
         </Reveal>
 
-        <StaggerContainer className="grid grid-cols-1 md:grid-cols-12 gap-px bg-[var(--color-border)]">
-          {/* Large card */}
-          {featured[0] && (
-            <StaggerItem className="md:col-span-7 bg-[var(--color-background)]">
-              <Link
-                href={`/projects/${featured[0].slug}`}
-                className="group block p-8 h-full min-h-64 hover:bg-[var(--color-muted)] transition-colors duration-300"
-              >
-                <div className="flex flex-col h-full">
-                  <div className="flex-1">
-                    <p className="text-caption text-[var(--color-accent)] mb-3">
-                      {featured[0].category}
-                    </p>
-                    <h3 className="text-display-md text-[var(--color-foreground)] mb-3 group-hover:text-[var(--color-accent)] transition-colors duration-200">
-                      {featured[0].title}
-                    </h3>
-                    <p className="text-[var(--color-muted-foreground)] text-sm leading-relaxed mb-6 max-w-sm">
-                      {featured[0].tagline}
-                    </p>
-                  </div>
-                  <div className="flex flex-wrap gap-2">
-                    {featured[0].techStack.slice(0, 4).map((tech) => (
-                      <Badge
-                        key={tech}
-                        variant="outline"
-                        className="text-caption border-[var(--color-border)] text-[var(--color-muted-foreground)]"
-                      >
-                        {tech}
-                      </Badge>
-                    ))}
-                  </div>
-                </div>
-              </Link>
-            </StaggerItem>
-          )}
-
-          {/* Small card */}
-          {featured[1] && (
-            <StaggerItem className="md:col-span-5 bg-[var(--color-background)]">
-              <Link
-                href={`/projects/${featured[1].slug}`}
-                className="group block p-8 h-full min-h-64 hover:bg-[var(--color-muted)] transition-colors duration-300"
-              >
-                <div className="flex flex-col h-full">
-                  <div className="flex-1">
-                    <p className="text-caption text-[var(--color-accent)] mb-3">
-                      {featured[1].category}
-                    </p>
-                    <h3 className="text-display-md text-[var(--color-foreground)] mb-3 group-hover:text-[var(--color-accent)] transition-colors duration-200">
-                      {featured[1].title}
-                    </h3>
-                    <p className="text-[var(--color-muted-foreground)] text-sm leading-relaxed mb-6">
-                      {featured[1].tagline}
-                    </p>
-                  </div>
-                  <div className="flex flex-wrap gap-2">
-                    {featured[1].techStack.slice(0, 3).map((tech) => (
-                      <Badge
-                        key={tech}
-                        variant="outline"
-                        className="text-caption border-[var(--color-border)] text-[var(--color-muted-foreground)]"
-                      >
-                        {tech}
-                      </Badge>
-                    ))}
-                  </div>
-                </div>
-              </Link>
-            </StaggerItem>
-          )}
-
-          {/* Bottom row */}
-          {featured[2] && (
-            <StaggerItem className="md:col-span-5 bg-[var(--color-background)]">
-              <Link
-                href={`/projects/${featured[2].slug}`}
-                className="group block p-8 h-full min-h-56 hover:bg-[var(--color-muted)] transition-colors duration-300"
-              >
-                <p className="text-caption text-[var(--color-accent)] mb-3">
-                  {featured[2].category}
-                </p>
-                <h3 className="text-display-md text-[var(--color-foreground)] mb-3 group-hover:text-[var(--color-accent)] transition-colors duration-200">
-                  {featured[2].title}
-                </h3>
-                <p className="text-[var(--color-muted-foreground)] text-sm leading-relaxed">
-                  {featured[2].tagline}
-                </p>
-              </Link>
-            </StaggerItem>
-          )}
-
-          {featured[3] && (
-            <StaggerItem className="md:col-span-7 bg-[var(--color-background)]">
-              <Link
-                href={`/projects/${featured[3].slug}`}
-                className="group block p-8 h-full min-h-56 hover:bg-[var(--color-muted)] transition-colors duration-300"
-              >
-                <p className="text-caption text-[var(--color-accent)] mb-3">
-                  {featured[3].category}
-                </p>
-                <h3 className="text-display-md text-[var(--color-foreground)] mb-3 group-hover:text-[var(--color-accent)] transition-colors duration-200">
-                  {featured[3].title}
-                </h3>
-                <p className="text-[var(--color-muted-foreground)] text-sm leading-relaxed max-w-sm">
-                  {featured[3].tagline}
-                </p>
-              </Link>
-            </StaggerItem>
-          )}
-        </StaggerContainer>
+        <ProjectList projects={featured} />
       </section>
 
       {/* Brief About */}

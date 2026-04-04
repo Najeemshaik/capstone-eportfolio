@@ -4,11 +4,11 @@ export const projects: Project[] = [
   {
     slug: "tremor-dashboard",
     title: "Tremor Dashboard",
+    heroImage: "/images/projects/tremor-dashboard.png",
     tagline: "Clinical-grade tremor analysis built for the browser.",
     description:
       "A browser-native clinical platform for Parkinson's Disease tremor monitoring — built from scratch with vanilla TypeScript, Web Bluetooth, and real-time signal processing.",
-    featured: true,
-    featuredOrder: 1,
+    featured: false,
     category: "Capstone Project",
     techStack: [
       "TypeScript",
@@ -72,11 +72,12 @@ export const projects: Project[] = [
   {
     slug: "closia",
     title: "Closia",
+    heroImage: "/images/projects/closia.png",
     tagline: "AI-powered wardrobe intelligence. Deployed on TestFlight.",
     description:
       "Full-stack iOS app with a 294-class computer vision model trained on 400,000+ images for apparel detection and outfit discovery.",
     featured: true,
-    featuredOrder: 2,
+    featuredOrder: 3,
     category: "AI / Mobile",
     techStack: [
       "SwiftUI",
@@ -124,11 +125,12 @@ export const projects: Project[] = [
   {
     slug: "queuo",
     title: "Queuo",
+    heroImage: "/images/projects/queuo.png",
     tagline: "Computer vision meets hospitality. 1st Place, UBC Hackathon.",
     description:
       "Real-time restaurant queue management using YOLOv8 for automatic party size detection and voice-powered reservation workflows.",
     featured: true,
-    featuredOrder: 3,
+    featuredOrder: 2,
     category: "AI / Web",
     techStack: [
       "Next.js",
@@ -163,11 +165,11 @@ export const projects: Project[] = [
   {
     slug: "neuraldrive",
     title: "NeuralDrive",
+    heroImage: "/images/projects/neuraldrive.png",
     tagline: "Visual-inertial SLAM for autonomous navigation.",
     description:
       "ORB-SLAM3 visual-inertial SLAM pipeline for depth-based perception and mapping, with CNN-based obstacle classification achieving 92% accuracy.",
-    featured: true,
-    featuredOrder: 4,
+    featured: false,
     category: "Robotics / ML",
     techStack: ["ORB-SLAM3", "Python", "PyTorch", "OpenCV", "CNN"],
     metrics: [
@@ -197,6 +199,38 @@ export const projects: Project[] = [
           { label: "Obstacle classification accuracy", value: "92%" },
           { label: "Inference latency", value: "645ms" },
         ],
+      },
+    ],
+  },
+  {
+    slug: "ayah",
+    title: "Ayah",
+    heroImage: "/images/projects/ayah.png",
+    tagline: "Learn Arabic through the Quran. Point your camera, discover words.",
+    description:
+      "A Quran-centered Arabic learning iOS app that uses AI-powered object recognition to connect real-world vocabulary to Quranic verses, with a structured curriculum and gamified learning.",
+    featured: true,
+    featuredOrder: 1,
+    category: "AI / Mobile",
+    techStack: [
+      "SwiftUI",
+      "Claude AI",
+      "Supabase",
+      "StoreKit 2",
+    ],
+    links: [],
+    sections: [
+      {
+        type: "text",
+        heading: "Overview",
+        content:
+          "Ayah is a minimalist iOS app that helps Muslims learn Arabic through everyday objects and a Quran-centered curriculum. Point your camera at any object to learn its Arabic name and discover where that word appears in the Quran. The app combines AI-powered object identification with a structured learning path, Quran reader with word-by-word highlighting, and a gamified quiz system.",
+      },
+      {
+        type: "text",
+        heading: "Technical Approach",
+        content:
+          "The app uses Claude AI via Supabase Edge Functions for real-time object identification from camera captures, with on-device subject isolation for clean recognition. A structured curriculum spans 9 units covering Arabic letters, diacritics, and Quranic vocabulary. The Quran Explorer features word-by-word reading with audio pronunciation at multiple speed tiers. Monetization is handled through StoreKit 2 subscriptions.",
       },
     ],
   },
