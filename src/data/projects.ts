@@ -31,41 +31,153 @@ export const projects: Project[] = [
       { label: "GitHub", url: "https://github.com/najeemshaik" },
     ],
     sections: [
+      // Hero video/image
+      {
+        type: "video",
+        videoSrc: "/reflection/hardware-demo.mov",
+        videoCaption: "Demonstration video of the Tremor Dashboard prototype streaming live sensor data.",
+      },
+      // Project Overview
       {
         type: "text",
-        heading: "The Problem",
+        heading: "Project Overview",
+        subtitle: "Understanding the problem and why this project matters.",
         content:
-          "Parkinson's Disease affects roughly 10 million people worldwide. Tremor — the involuntary rhythmic shaking most associated with the condition — is both a primary diagnostic indicator and a key measure of treatment efficacy. Yet clinical tremor assessment is still largely subjective: a neurologist watches a patient and scores severity on a rating scale. Objective, continuous, and accessible tremor monitoring doesn't exist at the bedside.\n\nOur capstone team set out to change that. The goal: a clinical-grade tremor monitoring system that connects to wearable sensors, streams motion data in real time, and delivers meaningful analysis — all in the browser, with no software installation required.",
+          "Parkinsonian tremor is an involuntary, rhythmic oscillation that significantly impacts the daily lives of affected individuals. For researchers working on assistive devices and robotic validation systems, accurately reproducing this motion in a controlled laboratory environment is critical — but existing approaches rely on inconsistent manual simulation or purely software-based models that fail to capture the physical dynamics of tremor.\n\nNEXERA Medical Solutions Limited required a physical tremor simulation platform that could integrate with their HVPL robotic arm, generate representative tremor-like motion, and allow researchers to configure parameters such as frequency and amplitude. The system needed to be repeatable, modular, and extensible for future research applications.\n\nOur multidisciplinary team designed, built, and evaluated a prototype system composed of three tightly coupled subsystems: a mechanical tremor-generation mechanism, a custom electrical and embedded control platform, and a software dashboard for tuning, monitoring, and data management.",
       },
+      // My Role
       {
         type: "text",
-        heading: "Design Iterations",
+        heading: "My Role",
+        subtitle: "Software architecture, dashboard design, and integration planning.",
         content:
-          "The project went through several major iterations before arriving at its final architecture.\n\nEarly designs relied on a mobile app approach — but the requirement to support clinical research environments with locked-down devices pushed us toward a browser-native solution. This was a meaningful constraint: we couldn't assume any installed software.\n\nOur first prototype used a React framework with a component library. After several weeks of development, the overhead of the framework's reactivity model against our high-frequency data streams became apparent — the rendering pipeline was causing jitter in the live waveform at higher sample rates. We made the architectural decision to rewrite the platform in vanilla TypeScript with a custom MVC pattern and a reactive observer store. Views subscribe directly to state changes; ViewModels dispatch updates; services handle I/O. This gave us precise control over rendering and eliminated the framework overhead entirely.\n\nThe connection layer also evolved. We initially designed only for Bluetooth (BLE). During integration testing, we discovered that USB serial devices offered lower latency and were more reliable in environments with RF interference. We added Web Serial API support, then a Python WebSocket backend for simulation, then a synthetic mock mode for demos and testing. The four-transport architecture emerged from real constraints, not over-engineering.\n\nThe clinical metrics set grew iteratively in collaboration with our medical advisor. We started with dominant frequency and RMS amplitude — the two most clinically relevant values — and added eight more metrics as we understood the requirements better: UPDRS tremor score estimate, signal-to-noise ratio, peak-to-peak amplitude, bandwidth, stability index, harmonic ratio, spectral power, and signal regularity. Each new metric required understanding the underlying clinical significance before implementing the signal processing.",
+          "Within the multidisciplinary team, my contribution centered on the software subsystem. I owned the architecture direction, dashboard design, feature planning, and user interaction model for the software interface that would allow engineers and researchers to interact with the tremor simulation hardware.\n\nMy responsibilities included evaluating software platform options, designing and iterating on the dashboard UI, implementing core visualization and control features, structuring cloud and local data storage, and ensuring the software architecture could support future live hardware communication.\n\nI worked closely with the electrical and mechanical subsystems to align interface requirements with real hardware constraints — ensuring the software design was grounded in what the physical system could actually deliver.",
+      },
+      // Architecture diagrams
+      {
+        type: "architecture-overview",
+        heading: "Software Architecture",
+        subtitle: "High-level overview of the MVVM architecture, from UI layer through to hardware and cloud integrations.",
       },
       {
-        type: "text",
-        heading: "Technical Architecture",
-        content:
-          "The platform runs entirely in the browser with no framework dependencies. The architecture follows a custom MVC pattern with a reactive observer store:\n\n— Services layer handles all I/O: BLE GATT operations, Web Serial framing, WebSocket message parsing, SQLite reads/writes, and Supabase sync.\n— The store is a central state container. Any component can subscribe to specific state slices; updates are batched and dispatched synchronously.\n— ViewModels contain all business logic — signal processing, metric computation, profile management — and are the only layer that writes to the store.\n— Views are pure rendering functions that subscribe to store slices and update the DOM. The live waveform and FFT spectrum render on Canvas API for maximum performance.\n\nThe signal processing pipeline implements a 256-sample Hann-windowed FFT running at the incoming sample rate. Clinical metrics are derived from the frequency-domain representation: dominant frequency is the peak bin, RMS is the square root of mean squared amplitude, spectral power integrates the tremor band (4–12 Hz), harmonic ratio compares fundamental power to harmonics, and so on. All processing runs synchronously in the main thread — the data rates involved (100–200 Hz) are comfortably within single-threaded capacity.\n\nBluetooth latency is monitored continuously via a BLE ping/pong protocol. Round-trip times above 12ms trigger an amber warning; above 50ms, a red alert. This real-time diagnostic was added after discovering that BLE latency in clinical environments could degrade waveform quality in ways that weren't visually obvious.",
+        type: "architecture-dataflow",
+        heading: "Data Flow Pipeline",
+        subtitle: "How a single sensor sample travels from hardware acquisition through signal processing to persistence.",
       },
+      // Design Process
+      {
+        type: "text",
+        heading: "Design Process & Iteration",
+        subtitle: "How the software design evolved through constraints, decisions, and refinement.",
+        content:
+          "The project went through several major iterations before arriving at its final architecture.",
+      },
+      // Platform comparison
+      {
+        type: "comparison",
+        heading: "Software Architecture Selection",
+        content: "We evaluated three candidate architectures against project scope, client needs, and future scalability. The web application was selected as the strongest fit across all criteria.",
+        options: [
+          {
+            title: "Web Application",
+            points: ["Cross-platform accessibility", "No installation required", "Matches client expectations for visibility", "Scalable architecture for future features"],
+            selected: true,
+          },
+          {
+            title: "Desktop Application",
+            points: ["Direct hardware access", "Lower latency for real-time control"],
+            selected: false,
+          },
+          {
+            title: "Mobile Application",
+            points: ["Portability", "Touch-friendly controls"],
+            selected: false,
+          },
+        ],
+      },
+      // UI iteration
+      {
+        type: "text",
+        heading: "Dashboard UI Iteration",
+        content:
+          "The dashboard layout evolved through multiple iterations. Early concepts focused on basic parameter input; later versions introduced real-time waveform monitoring, spectrum visualization, and a clearer separation between control and monitoring views. Each iteration was informed by client feedback, usability considerations, and alignment with the embedded communication strategy.",
+      },
+      // Wireframes
+      {
+        type: "gallery",
+        images: [
+          {
+            src: "/images/projects/tremor/wireframe-v1.png",
+            alt: "Early dashboard iteration",
+            caption: "Early dashboard iteration with connection controls, tremor parameter sliders, and a basic waveform view. Control and monitoring were not yet visually separated.",
+          },
+          {
+            src: "/images/projects/tremor/wireframe-v2.png",
+            alt: "Refined dashboard with focused waveform view",
+            caption: "Refined iteration with a dedicated real-time waveform visualization, window/gain controls, and cleaner separation of monitoring from parameter tuning.",
+          },
+        ],
+      },
+      // Dashboard screenshots
+      {
+        type: "gallery",
+        images: [
+          {
+            src: "/images/projects/tremor/dashboard-waveform.png",
+            alt: "Dashboard with power spectrum and clinical metrics",
+            caption: "Later iteration introducing power spectrum visualization, quick actions panel, and system status — consolidating monitoring and control into a single view.",
+          },
+          {
+            src: "/images/projects/tremor/dashboard-spectrum.png",
+            alt: "Final dashboard with full clinical metrics suite",
+            caption: "Final dashboard iteration with all 10 clinical metrics (dominant frequency, RMS amplitude, signal power, UPDRS score, regularity index, and more), power spectrum analysis, and real-time system telemetry.",
+          },
+        ],
+      },
+      // Profiles/sessions screenshot
+      {
+        type: "full-width-image",
+        images: [
+          {
+            src: "/images/projects/tremor/dashboard-profiles.png",
+            alt: "Profile management UI in dark theme",
+            caption: "Profile management interface (dark theme) enabling researchers to save, load, rename, and export tremor parameter presets across experimental runs.",
+          },
+        ],
+      },
+      // Final solution
+      {
+        type: "text",
+        heading: "Final Software Solution",
+        subtitle: "What the dashboard does and how it fits into the larger system.",
+        content:
+          "The final software deliverable is a web-based dashboard built around the needs of researchers and engineers who will interact with the tremor simulation hardware. It provides the following core capabilities:",
+      },
+      {
+        type: "feature-grid",
+        features: [
+          { title: "Tremor parameter controls", description: "Sliders and numeric controls for frequency and amplitude tuning" },
+          { title: "Real-time waveform display", description: "Live waveform showing generated tremor signals" },
+          { title: "Power spectrum visualization", description: "FFT-based frequency-domain analysis" },
+          { title: "Profile management", description: "Save and load tremor parameter configurations" },
+          { title: "Session management", description: "Track and organize experimental runs" },
+          { title: "Cloud + local storage", description: "Supabase cloud storage with local SQLite fallback for offline resilience" },
+          { title: "FTDI-mode local recording", description: "Direct serial data capture for high-fidelity recording" },
+          { title: "Extensible architecture", description: "Designed for future frontend-to-hardware live communication" },
+        ],
+      },
+      // Key metrics
       {
         type: "metrics-grid",
         heading: "Key Outcomes",
         metrics: [
           { label: "Clinical metrics computed in real time", value: "10" },
           { label: "Connection modes supported", value: "4" },
-          { label: "FFT resolution", value: "256-sample Hann window" },
+          { label: "FFT resolution", value: "256-sample" },
           { label: "Frequency analysis range", value: "0–80 Hz" },
           { label: "Data export formats", value: "CSV + JSON" },
-          { label: "Theme modes", value: "Light / Dark / High-contrast" },
+          { label: "Theme modes", value: "3" },
         ],
-      },
-      {
-        type: "text",
-        heading: "What I Built",
-        content:
-          "I was responsible for virtually the entire software platform. This included the full frontend architecture and UI, the signal processing pipeline, the multi-transport connection layer (BLE, USB/Serial, WebSocket, Mock), the clinical metrics engine, the session recording and export system, the profile management system with local SQLite and Supabase cloud sync, the BLE latency diagnostics, and the scripted parameter sequence player.\n\nI also integrated the firmware my teammate developed — bridging the hardware layer into the browser via BLE GATT and Web Serial. The system was tested with Vitest across the core signal processing and metrics computation modules.",
       },
     ],
   },

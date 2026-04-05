@@ -1,9 +1,14 @@
 export interface ProjectSection {
-  type: "text" | "image" | "gallery" | "metrics-grid"
+  type: "text" | "image" | "gallery" | "metrics-grid" | "feature-grid" | "comparison" | "video" | "full-width-image" | "architecture-overview" | "architecture-dataflow"
   heading?: string
+  subtitle?: string
   content?: string
   images?: { src: string; alt: string; caption?: string }[]
   metrics?: { label: string; value: string }[]
+  features?: { title: string; description: string }[]
+  options?: { title: string; points: string[]; selected?: boolean }[]
+  videoSrc?: string
+  videoCaption?: string
 }
 
 export interface Project {

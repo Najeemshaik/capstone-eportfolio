@@ -1,7 +1,9 @@
 import type { Metadata } from "next"
 import { notFound } from "next/navigation"
 import Link from "next/link"
-import { ArrowLeft, ArrowRight, ExternalLink } from "lucide-react"
+import Image from "next/image"
+import { ArrowLeft, ArrowRight, ExternalLink, Check } from "lucide-react"
+import { ArchitectureOverview, ArchitectureDataFlow } from "@/components/architecture-diagram"
 import { projects, getProjectBySlug } from "@/data/projects"
 import { Reveal } from "@/components/animations/reveal"
 import { Badge } from "@/components/ui/badge"
@@ -29,14 +31,29 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   }
 }
 
+function SectionHeading({ heading, subtitle }: { heading?: string; subtitle?: string }) {
+  if (!heading) return null
+  return (
+    <div className="mb-6">
+      <h2 className="font-display text-[var(--color-foreground)] text-2xl md:text-3xl mb-2">{heading}</h2>
+      {subtitle && (
+        <p className="text-[var(--color-muted-foreground)] text-sm">{subtitle}</p>
+      )}
+    </div>
+  )
+}
+
+function ImageOrPlaceholder({ src, alt, fill, className }: { src: string; alt: string; fill?: boolean; className?: string }) {
+  // Render actual image — if missing, Next.js will show broken image which signals to add it
+  return <Image src={src} alt={alt} fill={fill} className={className} />
+}
+
 function renderSection(section: ProjectSection, index: number) {
   switch (section.type) {
     case "text":
       return (
         <Reveal key={index} className="mb-16">
-          {section.heading && (
-            <h2 className="text-caption text-[var(--color-accent)] mb-4">{section.heading}</h2>
-          )}
+          <SectionHeading heading={section.heading} subtitle={section.subtitle} />
           {section.content && (
             <div className="max-w-2xl">
               {section.content.split("\n\n").map((para, i) => (
@@ -52,12 +69,122 @@ function renderSection(section: ProjectSection, index: number) {
         </Reveal>
       )
 
+    case "video":
+      return (
+        <Reveal key={index} className="mb-16">
+          <figure>
+            <div className="relative aspect-video rounded-lg overflow-hidden border border-[var(--color-border)] bg-[var(--color-muted)]">
+              <video
+                src={section.videoSrc}
+                autoPlay
+                loop
+                muted
+                playsInline
+                className="w-full h-full object-cover"
+              />
+            </div>
+            {section.videoCaption && (
+              <figcaption className="text-caption text-[var(--color-muted-foreground)] mt-3 text-center italic">
+                {section.videoCaption}
+              </figcaption>
+            )}
+          </figure>
+        </Reveal>
+      )
+
+    case "full-width-image":
+      return (
+        <Reveal key={index} className="mb-16">
+          <SectionHeading heading={section.heading} subtitle={section.subtitle} />
+          {section.images?.[0] && (
+            <figure>
+              <div className="relative aspect-video rounded-lg overflow-hidden bg-[#1a1a2e] border border-[var(--color-border)]">
+                <ImageOrPlaceholder
+                  src={section.images[0].src}
+                  alt={section.images[0].alt}
+                  fill
+                  className="object-contain p-4"
+                />
+              </div>
+              {section.images[0].caption && (
+                <figcaption className="text-caption text-[var(--color-muted-foreground)] mt-3 text-center italic">
+                  {section.images[0].caption}
+                </figcaption>
+              )}
+            </figure>
+          )}
+        </Reveal>
+      )
+
+    case "comparison":
+      return (
+        <Reveal key={index} className="mb-16">
+          <SectionHeading heading={section.heading} subtitle={section.subtitle} />
+          {section.content && (
+            <p className="text-[var(--color-muted-foreground)] text-base leading-relaxed mb-6 max-w-2xl">
+              {section.content}
+            </p>
+          )}
+          {section.options && (
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              {section.options.map((opt, i) => (
+                <div
+                  key={i}
+                  className={`rounded-lg border p-6 ${
+                    opt.selected
+                      ? "border-[var(--color-accent)] bg-[var(--color-accent)]/5"
+                      : "border-[var(--color-border)]"
+                  }`}
+                >
+                  <div className="flex items-center gap-2 mb-4">
+                    <h3 className="font-display text-[var(--color-foreground)] text-lg">{opt.title}</h3>
+                    {opt.selected && (
+                      <span className="text-[10px] tracking-wider uppercase text-[var(--color-accent)] border border-[var(--color-accent)] px-2 py-0.5 rounded-full">
+                        Selected
+                      </span>
+                    )}
+                  </div>
+                  <ul className="space-y-2">
+                    {opt.points.map((point, j) => (
+                      <li key={j} className="flex items-start gap-2 text-sm text-[var(--color-muted-foreground)]">
+                        <Check size={14} className="text-[var(--color-accent)] mt-0.5 shrink-0" />
+                        {point}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              ))}
+            </div>
+          )}
+        </Reveal>
+      )
+
+    case "feature-grid":
+      return (
+        <Reveal key={index} className="mb-16">
+          <SectionHeading heading={section.heading} subtitle={section.subtitle} />
+          {section.features && (
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              {section.features.map((feat, i) => (
+                <div key={i} className="border border-[var(--color-border)] rounded-lg p-5">
+                  <div className="flex items-start gap-3">
+                    <ArrowRight size={14} className="text-[var(--color-accent)] mt-1 shrink-0" />
+                    <div>
+                      <h3 className="text-[var(--color-foreground)] text-sm font-medium mb-1">{feat.title}</h3>
+                      <p className="text-[var(--color-muted-foreground)] text-sm">{feat.description}</p>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+        </Reveal>
+      )
+
     case "metrics-grid":
       return (
         <Reveal key={index} className="mb-16">
-          {section.heading && (
-            <h2 className="text-caption text-[var(--color-accent)] mb-6">{section.heading}</h2>
-          )}
+          <SectionHeading heading={section.heading} subtitle={section.subtitle} />
           {section.metrics && (
             <div className="grid grid-cols-2 md:grid-cols-3 gap-px bg-[var(--color-border)]">
               {section.metrics.map((metric, i) => (
@@ -78,10 +205,13 @@ function renderSection(section: ProjectSection, index: number) {
         <Reveal key={index} className="mb-16">
           {section.images?.[0] && (
             <figure>
-              <div className="bg-[var(--color-muted)] aspect-video flex items-center justify-center border border-[var(--color-border)]">
-                <p className="text-caption text-[var(--color-muted-foreground)]">
-                  {section.images[0].alt}
-                </p>
+              <div className="relative aspect-video rounded-lg overflow-hidden border border-[var(--color-border)] bg-[var(--color-muted)]">
+                <ImageOrPlaceholder
+                  src={section.images[0].src}
+                  alt={section.images[0].alt}
+                  fill
+                  className="object-cover"
+                />
               </div>
               {section.images[0].caption && (
                 <figcaption className="text-caption text-[var(--color-muted-foreground)] mt-3">
@@ -97,14 +227,19 @@ function renderSection(section: ProjectSection, index: number) {
       return (
         <Reveal key={index} className="mb-16">
           {section.images && (
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {section.images.map((img, i) => (
                 <figure key={i}>
-                  <div className="bg-[var(--color-muted)] aspect-video flex items-center justify-center border border-[var(--color-border)]">
-                    <p className="text-caption text-[var(--color-muted-foreground)]">{img.alt}</p>
+                  <div className="relative aspect-video rounded-lg overflow-hidden border border-[var(--color-border)] bg-[var(--color-muted)]">
+                    <ImageOrPlaceholder
+                      src={img.src}
+                      alt={img.alt}
+                      fill
+                      className="object-cover"
+                    />
                   </div>
                   {img.caption && (
-                    <figcaption className="text-caption text-[var(--color-muted-foreground)] mt-2">
+                    <figcaption className="text-caption text-[var(--color-muted-foreground)] mt-3 italic">
                       {img.caption}
                     </figcaption>
                   )}
@@ -112,6 +247,22 @@ function renderSection(section: ProjectSection, index: number) {
               ))}
             </div>
           )}
+        </Reveal>
+      )
+
+    case "architecture-overview":
+      return (
+        <Reveal key={index} className="mb-16">
+          <SectionHeading heading={section.heading} subtitle={section.subtitle} />
+          <ArchitectureOverview />
+        </Reveal>
+      )
+
+    case "architecture-dataflow":
+      return (
+        <Reveal key={index} className="mb-16">
+          <SectionHeading heading={section.heading} subtitle={section.subtitle} />
+          <ArchitectureDataFlow />
         </Reveal>
       )
 
@@ -211,10 +362,8 @@ export default async function ProjectPage({ params }: Props) {
       <div className="border-t border-[var(--color-border)] mb-20" />
 
       {/* Content sections */}
-      <div className="grid grid-cols-1 md:grid-cols-12 gap-8">
-        <div className="md:col-span-8 md:col-start-1">
-          {project.sections.map((section, i) => renderSection(section, i))}
-        </div>
+      <div>
+        {project.sections.map((section, i) => renderSection(section, i))}
       </div>
 
       {/* Prev / Next */}
