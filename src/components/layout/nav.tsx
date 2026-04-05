@@ -8,6 +8,7 @@ import { MobileMenu } from "./mobile-menu"
 
 const navLinks = [
   { href: "/about", label: "About" },
+  { href: "/projects/tremor-dashboard", label: "Capstone" },
   { href: "/projects", label: "Projects" },
   { href: "/experience", label: "Experience" },
   { href: "/reflection", label: "Reflection" },

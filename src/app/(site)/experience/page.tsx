@@ -1,4 +1,5 @@
 import type { Metadata } from "next"
+import Image from "next/image"
 import { experiences } from "@/data/experience"
 import { Reveal } from "@/components/animations/reveal"
 import { StaggerContainer, StaggerItem } from "@/components/animations/stagger-container"
@@ -36,9 +37,20 @@ export default function ExperiencePage() {
                   )}
                 </div>
                 <div className="md:col-span-9">
-                  <h3 className="font-display text-[var(--color-foreground)] text-2xl mb-1">
-                    {exp.company}
-                  </h3>
+                  <div className="flex items-center gap-4 mb-1">
+                    {exp.logo && (
+                      <Image
+                        src={exp.logo}
+                        alt={`${exp.company} logo`}
+                        width={120}
+                        height={32}
+                        className="object-contain h-8 w-auto"
+                      />
+                    )}
+                    <h3 className="font-display text-[var(--color-foreground)] text-2xl">
+                      {exp.company}
+                    </h3>
+                  </div>
                   <p className="text-caption text-[var(--color-accent)] mb-4">{exp.role}</p>
                   <p className="text-[var(--color-muted-foreground)] text-sm leading-relaxed mb-6 max-w-xl">
                     {exp.description}

@@ -13,7 +13,6 @@ export const projects: Project[] = [
     techStack: [
       "TypeScript",
       "Web Bluetooth",
-      "Web Serial",
       "WebSocket",
       "Supabase",
       "SQLite",
@@ -24,8 +23,8 @@ export const projects: Project[] = [
     metrics: [
       { label: "Clinical metrics computed", value: "10" },
       { label: "FFT window size", value: "256 samples" },
-      { label: "Frequency range", value: "0–80 Hz" },
-      { label: "Transport modes", value: "4 (BLE, USB, WebSocket, Mock)" },
+      { label: "Tremor band", value: "4–12 Hz" },
+      { label: "Transport modes", value: "3 (BLE, WebSocket, Mock)" },
     ],
     links: [
       { label: "GitHub", url: "https://github.com/najeemshaik" },
@@ -172,11 +171,11 @@ export const projects: Project[] = [
         heading: "Key Outcomes",
         metrics: [
           { label: "Clinical metrics computed in real time", value: "10" },
-          { label: "Connection modes supported", value: "4" },
+          { label: "Connection modes supported", value: "3" },
           { label: "FFT resolution", value: "256-sample" },
-          { label: "Frequency analysis range", value: "0–80 Hz" },
+          { label: "Tremor analysis band", value: "4–12 Hz" },
           { label: "Data export formats", value: "CSV + JSON" },
-          { label: "Theme modes", value: "3" },
+          { label: "Theme modes", value: "Light / Dark + High-contrast" },
         ],
       },
     ],
@@ -238,7 +237,7 @@ export const projects: Project[] = [
     slug: "queuo",
     title: "Queuo",
     heroImage: "/images/projects/queuo.png",
-    tagline: "Computer vision meets hospitality. 1st Place, UBC Hackathon.",
+    tagline: "Computer vision meets hospitality. Built at UBC Hackathon.",
     description:
       "Real-time restaurant queue management using YOLOv8 for automatic party size detection and voice-powered reservation workflows.",
     featured: true,
@@ -253,7 +252,6 @@ export const projects: Project[] = [
       "Gemini",
     ],
     metrics: [
-      { label: "Placement", value: "1st Place" },
       { label: "Event", value: "UBC Hackathon" },
     ],
     links: [
@@ -264,53 +262,13 @@ export const projects: Project[] = [
         type: "text",
         heading: "Overview",
         content:
-          "Queuo is an AI-powered restaurant queue management system built in 24 hours at the UBC Hackathon, where it won first place. The system uses YOLOv8 to automatically detect party size from a camera feed — eliminating the need for manual check-in. A voice reservation workflow powered by Web Speech API and Gemini handles automated check-in conversations.",
+          "Queuo is an AI-powered restaurant queue management system built in 24 hours at the UBC Hackathon. The system uses YOLOv8 to automatically detect party size from a camera feed — eliminating the need for manual check-in. A voice reservation workflow powered by Web Speech API and Gemini handles automated check-in conversations.",
       },
       {
         type: "text",
         heading: "How It Works",
         content:
           "When a party arrives, the camera feed runs through a YOLOv8 model that counts the number of people and estimates party size. This data flows to a Next.js operations dashboard via Supabase and WebSockets in real time. The host sees live table availability, party queue, and estimated wait times — all updating without page refreshes.\n\nThe voice check-in system lets guests say their name and party size to complete a reservation, with Gemini handling natural language understanding for edge cases and confirmation flows.",
-      },
-    ],
-  },
-  {
-    slug: "neuraldrive",
-    title: "NeuralDrive",
-    heroImage: "/images/projects/neuraldrive.png",
-    tagline: "Visual-inertial SLAM for autonomous navigation.",
-    description:
-      "ORB-SLAM3 visual-inertial SLAM pipeline for depth-based perception and mapping, with CNN-based obstacle classification achieving 92% accuracy.",
-    featured: false,
-    category: "Robotics / ML",
-    techStack: ["ORB-SLAM3", "Python", "PyTorch", "OpenCV", "CNN"],
-    metrics: [
-      { label: "CNN classification accuracy", value: "92%" },
-      { label: "Inference latency", value: "645ms" },
-    ],
-    links: [
-      { label: "GitHub", url: "https://github.com/najeemshaik" },
-    ],
-    sections: [
-      {
-        type: "text",
-        heading: "Overview",
-        content:
-          "NeuralDrive implements a visual-inertial SLAM pipeline for autonomous vehicle perception. ORB-SLAM3 fuses camera and IMU data to build a real-time map and estimate vehicle pose, enabling depth-based obstacle avoidance without GPS dependency.",
-      },
-      {
-        type: "text",
-        heading: "Technical Approach",
-        content:
-          "A CNN model classifies obstacles in the camera feed with 92% accuracy at 645ms inference latency. The visual-inertial fusion from ORB-SLAM3 provides robust pose estimation even in GPS-denied environments like underground parking or dense urban areas. The system was evaluated on standard autonomous driving datasets.",
-      },
-      {
-        type: "metrics-grid",
-        heading: "Performance",
-        metrics: [
-          { label: "Obstacle classification accuracy", value: "92%" },
-          { label: "Inference latency", value: "645ms" },
-        ],
       },
     ],
   },
@@ -343,33 +301,6 @@ export const projects: Project[] = [
         heading: "Technical Approach",
         content:
           "The app uses Claude AI via Supabase Edge Functions for real-time object identification from camera captures, with on-device subject isolation for clean recognition. A structured curriculum spans 9 units covering Arabic letters, diacritics, and Quranic vocabulary. The Quran Explorer features word-by-word reading with audio pronunciation at multiple speed tiers. Monetization is handled through StoreKit 2 subscriptions.",
-      },
-    ],
-  },
-  {
-    slug: "content-intelligence",
-    title: "Content Intelligence",
-    tagline: "Find what's going viral before everyone else.",
-    description:
-      "SaaS tool that identifies viral competitor content across social platforms and generates AI-scripted content strategies.",
-    featured: false,
-    category: "SaaS / AI",
-    techStack: ["Next.js", "TypeScript", "LLM", "Whisper", "Supabase"],
-    links: [
-      { label: "GitHub", url: "https://github.com/najeemshaik" },
-    ],
-    sections: [
-      {
-        type: "text",
-        heading: "Overview",
-        content:
-          "Content Intelligence is a Next.js SaaS that monitors competitor social profiles across major platforms, identifies statistical outlier posts — the content that's significantly outperforming a creator's average — and runs them through an automated pipeline: video transcription with Whisper, performance analysis, and LLM-generated script outlines for replication.",
-      },
-      {
-        type: "text",
-        heading: "The Pipeline",
-        content:
-          "The system ingests social platform data on a schedule, computes engagement benchmarks per creator, flags outliers above a configurable threshold, transcribes video content, and generates structured content briefs. The output is a dashboard that tells a content team exactly what's working for competitors and provides an AI-assisted starting point for their own scripts.",
       },
     ],
   },

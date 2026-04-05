@@ -59,9 +59,9 @@ export function ArchitectureOverview() {
         <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
           <ServiceGroup label="Connectivity" items={[
             { text: "Bluetooth (GATT)", active: true },
-            { text: "Web Serial", active: true },
             { text: "Python WebSocket", active: true },
             { text: "Mock Generator" },
+            { text: "Serial (FTDI Recording)" },
           ]} />
           <ServiceGroup label="Processing" items={[
             { text: "256-bin FFT" },
@@ -120,9 +120,8 @@ export function ArchitectureDataFlow() {
           <Step n="1" title="Acquire" sub="Sensor → raw signal">
             <div className="flex flex-wrap gap-1.5">
               <Chip active>BLE GATT</Chip>
-              <Chip active>Web Serial</Chip>
-              <Chip>WebSocket</Chip>
-              <Chip>Mock</Chip>
+              <Chip active>Python WebSocket</Chip>
+              <Chip>Mock Synthesizer</Chip>
             </div>
           </Step>
 

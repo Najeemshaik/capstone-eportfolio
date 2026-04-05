@@ -6,6 +6,7 @@ export const experiences: Experience[] = [
     role: "Electrical Engineering Intern",
     period: "Apr 2023 – Aug 2024",
     location: "Vancouver, BC",
+    logo: "/images/logos/finning.png",
     description:
       "Built production-grade automation and monitoring infrastructure for heavy equipment service operations.",
     highlights: [

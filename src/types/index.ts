@@ -31,6 +31,7 @@ export interface Experience {
   role: string
   period: string
   location?: string
+  logo?: string
   description: string
   highlights: string[]
   type: "engineering" | "creative"

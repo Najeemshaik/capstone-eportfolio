@@ -37,7 +37,7 @@ export function ProjectList({ projects }: ProjectListProps) {
     >
       {/* Cursor-following image */}
       <AnimatePresence>
-        {hoveredIndex !== null && projects[hoveredIndex]?.heroImage && (
+        {hoveredIndex !== null && projects[hoveredIndex]?.heroImage && projects[hoveredIndex]?.slug !== "tremor-dashboard" && (
           <motion.div
             key={hoveredIndex}
             className="hidden lg:block absolute w-[250px] h-[250px] rounded-2xl overflow-hidden pointer-events-none z-50 -translate-x-1/2 -translate-y-1/2"

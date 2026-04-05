@@ -14,7 +14,7 @@ export const metadata: Metadata = {
 
 const credibilityMarkers = [
   "UBC Electrical Engineering",
-  "1st Place — UBC Hackathon",
+  "UBC Hackathon",
   "400k+ Image Dataset",
   "Deployed iOS App",
   "Finning Canada Engineering Intern",
